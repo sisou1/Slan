@@ -21,7 +21,6 @@ const createForm = reactive({
 });
 
 const joinForms = reactive<Record<number, { nickname: string }>>({});
-
 const hasActivities = computed(() => activities.value.length > 0);
 
 async function loadActivities() {
@@ -35,8 +34,8 @@ async function loadActivities() {
         joinForms[activity.id] = { nickname: "" };
       }
     });
-  } catch (error) {
-    errorMessage.value = "Impossible de charger les activités.";
+  } catch {
+    errorMessage.value = "Impossible de charger les evenements.";
   } finally {
     loadingActivities.value = false;
   }
@@ -44,7 +43,7 @@ async function loadActivities() {
 
 async function handleCreateActivity() {
   if (!createForm.name.trim()) {
-    errorMessage.value = "Le nom de l'activité est obligatoire.";
+    errorMessage.value = "Le nom de l'evenement est obligatoire.";
     return;
   }
 
@@ -58,10 +57,10 @@ async function handleCreateActivity() {
     });
     createForm.name = "";
     createForm.description = "";
-    successMessage.value = "Activité créée.";
+    successMessage.value = "Evenement cree.";
     await loadActivities();
-  } catch (error) {
-    errorMessage.value = "Impossible de créer l'activité.";
+  } catch {
+    errorMessage.value = "Impossible de creer l'evenement.";
   }
 }
 
@@ -70,7 +69,7 @@ async function handleLoadParticipants(activityId: number) {
   errorMessage.value = "";
   try {
     participantsByActivity[activityId] = await fetchParticipants(activityId);
-  } catch (error) {
+  } catch {
     errorMessage.value = "Impossible de charger les participants.";
   } finally {
     loadingParticipants[activityId] = false;
@@ -90,10 +89,10 @@ async function handleJoin(activityId: number) {
   try {
     await joinActivity(activityId, { nickname });
     joinForms[activityId].nickname = "";
-    successMessage.value = "Participation enregistrée.";
+    successMessage.value = "Participation enregistree.";
     await Promise.all([loadActivities(), handleLoadParticipants(activityId)]);
-  } catch (error) {
-    errorMessage.value = "Impossible de rejoindre cette activité.";
+  } catch {
+    errorMessage.value = "Impossible de rejoindre cet evenement.";
   }
 }
 
@@ -107,12 +106,12 @@ onMounted(loadActivities);
 <template>
   <main class="page">
     <section class="panel">
-      <h1>Mini-tournois</h1>
+      <h1>Slan</h1>
       <form class="create-form" @submit.prevent="handleCreateActivity">
         <input
           v-model="createForm.name"
           type="text"
-          placeholder="Nom du tournoi"
+          placeholder="Nom de l'evenement"
           maxlength="120"
           required
         />
@@ -122,7 +121,7 @@ onMounted(loadActivities);
           placeholder="Description (optionnelle)"
           maxlength="220"
         />
-        <button type="submit">Créer</button>
+        <button type="submit">Creer</button>
       </form>
       <p v-if="errorMessage" class="feedback error">{{ errorMessage }}</p>
       <p v-if="successMessage" class="feedback success">{{ successMessage }}</p>
@@ -130,14 +129,14 @@ onMounted(loadActivities);
 
     <section class="panel">
       <header class="list-header">
-        <h2>Activités</h2>
+        <h2>Evenements</h2>
         <button type="button" @click="loadActivities" :disabled="loadingActivities">
-          {{ loadingActivities ? "Chargement..." : "Rafraîchir" }}
+          {{ loadingActivities ? "Chargement..." : "Rafraichir" }}
         </button>
       </header>
 
-      <p v-if="loadingActivities">Chargement des activités...</p>
-      <p v-else-if="!hasActivities">Aucune activité pour le moment.</p>
+      <p v-if="loadingActivities">Chargement des evenements...</p>
+      <p v-else-if="!hasActivities">Aucun evenement pour le moment.</p>
 
       <ul v-else class="activity-list">
         <li v-for="activity in activities" :key="activity.id" class="activity-card">
@@ -146,7 +145,7 @@ onMounted(loadActivities);
             <span>{{ activity.participants_count }} participant(s)</span>
           </div>
           <p class="description">{{ activity.description || "Sans description" }}</p>
-          <p class="meta">Créée le {{ formatDate(activity.created_at) }}</p>
+          <p class="meta">Cree le {{ formatDate(activity.created_at) }}</p>
 
           <form class="join-form" @submit.prevent="handleJoin(activity.id)">
             <input
@@ -179,3 +178,4 @@ onMounted(loadActivities);
     </section>
   </main>
 </template>
+

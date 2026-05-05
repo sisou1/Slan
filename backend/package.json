@@ -1,7 +1,7 @@
 {
-  "name": "backend",
+  "name": "slan-back",
   "version": "1.0.0",
-  "description": "Mini tournament API",
+  "description": "Slan backend API",
   "type": "module",
   "main": "dist/server.js",
   "scripts": {
@@ -13,7 +13,7 @@
   "keywords": [
     "express",
     "postgres",
-    "tournament"
+    "slan"
   ],
   "author": "",
   "license": "ISC",

@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: slan-back
+    runtime: node
+    rootDir: backend
+    buildCommand: npm ci && npm run build
+    preDeployCommand: npm run db:init
+    startCommand: npm run start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: DATABASE_USE_SSL
+        value: "true"
+      - key: DATABASE_SSL_REJECT_UNAUTHORIZED
+        value: "false"
+      - key: FRONTEND_URL
+        sync: false
+
+  - type: web
+    name: slan-front
+    runtime: static
+    rootDir: frontend
+    buildCommand: npm ci && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_URL
+        sync: false

@@ -1,4 +1,6 @@
-# Mini-tournois (MVP)
+# Slan (MVP)
+
+Slan = Sisou + Lan.
 
 Stack:
 - Frontend: Vue 3 + Vite + TypeScript + axios
@@ -76,3 +78,8 @@ Frontend is available at `http://localhost:5173`.
 - `DELETE /activities/:id`
 - `GET /activities/:id/participants`
 - `POST /activities/:id/participants`
+
+## Product logic
+
+- The project/site name is `Slan`.
+- Users create events (activities) and other users join them.
